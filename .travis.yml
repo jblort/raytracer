@@ -1,0 +1,64 @@
+language: cpp
+
+matrix:
+    include:
+
+        # Linux C++14 GCC builds
+        #- os: linux
+        #  compiler: gcc
+        #  addons: &gcc6
+        #    apt:
+        #      sources: ['ubuntu-toolchain-r-test']
+        #      packages: ['g++-6']
+        #  env: COMPILER='g++-6' BUILD_TYPE='Release'
+
+        #- os: linux
+        #  compiler: gcc
+        #  addons: *gcc6
+        #  env: COMPILER='g++-6' BUILD_TYPE='Debug'
+
+        ## Linux C++14 Clang builds
+        #- os: linux
+        #  compiler: clang
+        #  addons: &clang38
+        #    apt:
+        #      sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
+        #      packages: ['clang-3.8']
+        #  env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
+
+        #- os: linux
+        #  compiler: clang
+        #  addons: *clang38
+        #  env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
+
+        # OSX C++14 Clang Builds
+
+        - os: osx
+          compiler: clang
+          env: COMPILER='clang++' BUILD_TYPE='Debug'
+
+        - os: osx
+          compiler: clang
+          env: COMPILER='clang++' BUILD_TYPE='Release'
+
+install:
+# Install conan
+- pip install conan
+# Automatic detection of your arch, compiler, etc.
+- conan user
+# Install cmake
+#- if [ $TRAVIS_OS_NAME = osx ]; then brew install cmake; fi
+
+before_script:
+- mkdir build
+- cd build
+- conan install ..
+- cmake ..
+
+script:
+- cmake --build .
+- ctest -V
+
+branches:
+    only:
+        - master
