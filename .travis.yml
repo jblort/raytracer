@@ -52,7 +52,6 @@ install:
 before_script:
 - mkdir build
 - cd build
-- conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
 - conan install .. --build missing
 - cmake ..
 
