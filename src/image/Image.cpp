@@ -37,23 +37,23 @@ void Image::fillColorAt(int x, int y, Color color) {
 void Image::fillRGBColorAt(int x, int y, Color color) {
     auto pixelStart = (x + y * _width) * 3;
 
-    _pixels[pixelStart] = color.red;
-    _pixels[pixelStart + 1] = color.green;
-    _pixels[pixelStart + 2] = color.blue;
+    _pixels[pixelStart] = color.r() * 255;
+    _pixels[pixelStart + 1] = color.g() * 255;
+    _pixels[pixelStart + 2] = color.b() * 255;
 }
 
 void Image::fillRGBAColorAt(int x, int y, Color color) {
     auto pixelStart = (x + y * _width) * 4;
 
-    _pixels[pixelStart] = color.red;
-    _pixels[pixelStart + 1] = color.green;
-    _pixels[pixelStart + 2] = color.blue;
-    _pixels[pixelStart + 3] = color.alpha;
+    _pixels[pixelStart] = color.r() * 255;
+    _pixels[pixelStart + 1] = color.g() * 255;
+    _pixels[pixelStart + 2] = color.b() * 255;
+    _pixels[pixelStart + 3] = color.a() * 255;
 }
 
 void Image::fillGrayscaleColorAt(int x, int y, Color color) {
     auto pixelIndex = x + y * _width;
-    _pixels[pixelIndex] = color.red;
+    _pixels[pixelIndex] = color.r() * 255;
 }
 
 Image emptyImage(int width, int height, PixelFormat format) {
