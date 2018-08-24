@@ -1,9 +1,10 @@
 #include "math/Ray.h"
 
 #include <cmath>
+#include <iostream>
 
-#include "math/VectorHelpers.h"
-#include "shapes/Sphere.h"
+#include "math/MathUtils.h"
+#include "traceables/shapes/Sphere.h"
 
 using namespace rt;
 
@@ -26,22 +27,20 @@ optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const 
     glm::vec3 o = ray.origin;
     glm::vec3 c = sphere.center;
     double r = sphere.radius;
-    double delta;
     double loc = glm::dot(l, (o - c));
-    delta = std::pow(loc, 2.0) - std::pow(norm(o - c), 2.0)+ r*r;
-
-    // The quadratic equation we solve to find intersection has no solution
-    if (delta < 0.0) {
-        return intersection;
-    }
-
+    double delta = std::pow(loc, 2.0) - std::pow(norm(o - c), 2.0) + r*r;
 
     // The quadratic equation we solve to find the intersection has one solution
-    if (delta == 0.0 ) {
+    if (isEqual(delta, 0.0, 0.01)) {
         float dist = - loc;
         glm::vec3 intersectionPoint = o + l * dist;
         glm::vec3 intersectionNormal = glm::normalize(intersectionPoint - c);
+
         intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
+    }
+    // The quadratic equation we solve to find intersection has no solution
+    else if (delta < 0.0) {
+        return intersection;
     }
     // The quadratic equation we solve to find the intersection has two solution
     else {

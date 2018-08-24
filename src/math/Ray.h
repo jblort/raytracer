@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "shapes/Sphere.h"
+#include "traceables/shapes/Sphere.h"
 #include "std_helpers/std_helpers.h"
 
 namespace rt {
