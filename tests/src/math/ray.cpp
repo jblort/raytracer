@@ -1,8 +1,11 @@
+#include <iostream>
+
 #include <catch.hpp>
 #include <glm/glm.hpp>
 
 #include "math/Ray.h"
-#include "shapes/Sphere.h"
+#include "math/MathUtils.h"
+#include "traceables/shapes/Sphere.h"
 
 using namespace rt;
 
@@ -16,8 +19,8 @@ SCENARIO("Ray intersection") {
 
             THEN("it returns the position and normal of the intersection") {
                 REQUIRE(intersection);
-                REQUIRE(intersection->position == glm::vec3(0.0, 0.0, 2.0));
-                REQUIRE(intersection->normal == glm::vec3(0.0, 0.0, 1.0));
+                REQUIRE(isEqual(intersection->position, glm::vec3(0.0, 0.0, 2.0)));
+                REQUIRE(isEqual(intersection->normal, glm::vec3(0.0, 0.0, 1.0)));
             }
         }
     }

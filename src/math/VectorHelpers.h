@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include <glm/glm.hpp>
 
 namespace rt {
@@ -10,4 +12,6 @@ namespace rt {
         return std::sqrtf(sum);
     }
 
+    std::ostream& operator<<(std::ostream&, const glm::vec3& v);
+    std::ostream& operator<<(std::ostream&, const glm::vec4& v);
 }
