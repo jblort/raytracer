@@ -38,12 +38,8 @@ optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const 
 
         intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
     }
-    // The quadratic equation we solve to find intersection has no solution
-    else if (delta < 0.0) {
-        return intersection;
-    }
     // The quadratic equation we solve to find the intersection has two solution
-    else {
+    else if (delta > 0.0) {
         float deltaSq = std::sqrt(delta);
 
         float dist1 = - loc + deltaSq;
