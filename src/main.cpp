@@ -4,18 +4,11 @@
 #include "tracer/Tracer.h"
 
 int main(int argc, char** argv) {
+    using namespace rt;
 
-    // Parse args
-    // Default scene for now
+    auto image = raytracer::traceDefaultImage();
 
-    // Load scene
-    // auto scene = ...
-
-    // Trace scene
-    // auto image = rt::raytracer::traceImageFromScene();
-
-    // Save image(s)
-    // rt::ImageIO::saveToFile(image, "Default.tga");
+    ImageIO::saveToFile(image, "default.tga");
 
     return 0;
 }
