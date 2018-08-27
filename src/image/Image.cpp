@@ -1,5 +1,7 @@
 #include "image/Image.h"
 
+#include <iostream>
+
 using namespace rt;
 
 int rt::channelsForFormat(const PixelFormat& format) {
@@ -16,7 +18,11 @@ int rt::channelsForFormat(const PixelFormat& format) {
 Image::Image()
 {}
 
-Image::Image(std::vector<unsigned char> pixels, int width, int height, PixelFormat format)
+Image::Image(std::vector<unsigned char> pixels, int width, int height, PixelFormat format):
+_pixels{std::move(pixels)},
+_width{width},
+_height{height},
+_format{format}
 {}
 
 void Image::fillColorAt(int x, int y, Color color) {
@@ -56,10 +62,10 @@ void Image::fillGrayscaleColorAt(int x, int y, Color color) {
     _pixels[pixelIndex] = color.r() * 255;
 }
 
-Image emptyImage(int width, int height, PixelFormat format) {
+Image rt::emptyImage(int width, int height, PixelFormat format) {
     int channelCount = channelsForFormat(format);
     auto pixels = std::vector<unsigned char>(width * height * channelCount);
-
-    Image emptyImage{std::move(pixels), width, height, format};
+    std::cout << "Creating empty image of size: " << width << " x " << height << " and channels: " << channelCount << "\n";
+    Image emptyImage{pixels, width, height, format};
     return emptyImage;
 }
