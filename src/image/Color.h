@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace rt {
 
 struct Color {
@@ -25,10 +27,10 @@ Color operator*(const Color& lhs, const Color& rhs);
 
 template<typename T>
 Color operator*(const Color& color, const T& value) {
-    return Color{float(color.r()* value),
-                 float(color.g() * value),
-                 float(color.b() * value),
-                 float(color.a() * value)};
+    return Color{std::fmin(float(color.r() * value), 1.0),
+                 std::fmin(float(color.g() * value), 1.0),
+                 std::fmin(float(color.b() * value), 1.0),
+                 std::fmin(float(color.a() * value), 1.0)};
 }
 
 template<typename T>

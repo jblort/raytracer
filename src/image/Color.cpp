@@ -31,7 +31,7 @@ float Color::a() const {
     return _alpha;
 }
 
-Color operator+(const Color& lhs, const Color& rhs) {
+Color rt::operator+(const Color& lhs, const Color& rhs) {
     auto r = lhs.r() + rhs.r();
     auto g = lhs.g() + rhs.g();
     auto b = lhs.b() + rhs.b();
@@ -40,7 +40,7 @@ Color operator+(const Color& lhs, const Color& rhs) {
     return Color{r, g, b, a};
 }
 
-Color operator*(const Color& lhs, const Color& rhs) {
+Color rt::operator*(const Color& lhs, const Color& rhs) {
     auto r = lhs.r() * rhs.r();
     auto g = lhs.g() * rhs.g();
     auto b = lhs.b() * rhs.b();
