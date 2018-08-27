@@ -6,6 +6,7 @@
 #include "std_helpers/std_helpers.h"
 
 namespace rt {
+    class Camera;
 
     struct Ray {
         glm::vec3 origin;
@@ -18,9 +19,11 @@ namespace rt {
     };
 
     namespace RayUtils {
-        Ray makePrimaryRay(int gridX, int gridY, glm::vec3 cameraCenter);
-        Ray makeShadowRay(glm::vec3 intersectionPosition, glm::vec3 lightPosition);
+        Ray makePrimaryRay(int u, int v, const Camera& camera);
+        Ray makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition);
 
         optional<RayIntersection> sphericalIntersection(const Ray& ray, const Sphere& sphere);
+
+        Ray transform(const Ray& ray, const glm::mat4& transform);
     }
 }

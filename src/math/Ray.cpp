@@ -3,21 +3,40 @@
 #include <cmath>
 #include <iostream>
 
+#include <glm/gtc/matrix_transform.hpp>
+
+#include "camera/Camera.h"
 #include "math/MathUtils.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;
 
-Ray RayUtils::makePrimaryRay(int gridX, int gridY, glm::vec3 cameraCenter) {
+Ray RayUtils::makePrimaryRay(int u, int v, const Camera& camera) {
     Ray ray;
+
+    ray.origin = glm::vec3(0.0, 0.0, 0.0);
+    ray.direction = glm::normalize(glm::vec3(u, v, camera.fovFactor()));
+
+    auto primaryRay = RayUtils::transform(ray, camera.viewTransform());
 
     return ray;
 }
 
-Ray RayUtils::makeShadowRay(glm::vec3 intersectionPosition, glm::vec3 lightPosition) {
-    Ray ray;
-
+Ray RayUtils::makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition) {
+    Ray ray{intersectionPosition, glm::normalize(lightPosition - intersectionPosition)};
     return ray;
+}
+
+Ray RayUtils::transform(const Ray& ray, const glm::mat4& transform) {
+    Ray transformedRay;
+
+    auto origin = transform *  glm::vec4(ray.origin, 1.0);
+    auto direction = transform * glm::vec4(ray.direction, 1.0);
+
+    transformedRay.origin = glm::vec3(origin);
+    transformedRay.direction = glm::normalize(glm::vec3(direction));
+
+    return transformedRay;
 }
 
 optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const Sphere& sphere) {
