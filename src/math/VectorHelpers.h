@@ -11,7 +11,4 @@ namespace rt {
         float sum = vec[0]*vec[0] + vec[1]*vec[1] + vec[2]*vec[2];
         return std::sqrtf(sum);
     }
-
-    std::ostream& operator<<(std::ostream&, const glm::vec3& v);
-    std::ostream& operator<<(std::ostream&, const glm::vec4& v);
 }
