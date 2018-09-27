@@ -48,3 +48,12 @@ Color rt::operator*(const Color& lhs, const Color& rhs) {
 
     return Color{r, g, b, a};
 }
+
+Color rt::operator-(const Color& lhs, const Color& rhs) {
+    auto r = lhs.r() - rhs.r();
+    auto g = lhs.g() - rhs.g();
+    auto b = lhs.b() - rhs.b();
+    auto a = lhs.a() - rhs.a();
+
+    return Color{r, g, b, a};
+}

@@ -23,7 +23,7 @@ public:
 
 Color operator+(const Color& lhs, const Color& rhs);
 Color operator*(const Color& lhs, const Color& rhs);
-
+Color operator-(const Color& lhs, const Color& rhs);
 
 template<typename T>
 Color operator*(const Color& color, const T& value) {
