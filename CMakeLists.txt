@@ -10,6 +10,11 @@ conan_basic_setup()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+#If no build type specified with the command line, use debug
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Debug)
+endif()
+
 # You can try and uncomment this if clang is complaining about not finding the standard
 # library headers or symbols on OSX
 #if (APPLE)
