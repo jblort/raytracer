@@ -2,7 +2,7 @@
 catch2/2.2.2@bincrafters/stable
 glm/0.9.9.0@g-truc/stable
 argh/1.2.1@adishavit/stable
-
+boost_format/1.66.0@bincrafters/stable
 
 [generators]
 cmake

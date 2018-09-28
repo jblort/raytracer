@@ -1,7 +1,7 @@
 #pragma once
 #include <sstream>
 
-#include "logging/StreamableGlm.h"
+#include <glm/glm.hpp>
 
 namespace rt {
 
@@ -23,5 +23,11 @@ namespace rt {
         std::ostream& info();
         std::ostream& debug();
         std::ostream& verbose();
+
+    public:
+        void logVector(const glm::vec3& vec);
+        void logVector(const glm::vec4& vec);
+        void logMatrix(const glm::mat3& mat);
+        void logMatrix(const glm::mat4& mat);
     };
 }

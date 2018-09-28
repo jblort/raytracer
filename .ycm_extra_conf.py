@@ -55,6 +55,7 @@ flags = [
 '-I/Users/jblort/.conan/data/Catch2/2.2.2/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include',
 '-I/Users/jblort/.conan/data/glm/0.9.9.0/g-truc/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include',
 '-I/Users/jblort/.conan/data/argh/1.2.1/adishavit/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/include',
+'-I/Users/jblort/.conan/data/boost_format/1.66.0/bincrafters/stable/package/5ab84d6acfe1f23c4fae0ab88f26e3a396351ac9/format/include',
 '-I/Users/jblort/selfprog/raytracer/src'
 ]
 
