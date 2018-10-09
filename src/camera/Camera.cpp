@@ -34,3 +34,7 @@ glm::mat4 Camera::viewTransform() const {
 double Camera::fovFactor() const {
     return _fovFactor;
 }
+
+glm::vec3 Camera::position() const {
+    return _position;
+}

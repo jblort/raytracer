@@ -11,7 +11,7 @@ namespace rt {
 
         glm::mat4 viewTransform() const;
         double    fovFactor() const;
-
+        glm::vec3 position() const;
 
     private:
         glm::mat4 _viewTransform;
