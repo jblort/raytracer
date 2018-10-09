@@ -19,7 +19,7 @@ namespace rt {
     };
 
     namespace RayUtils {
-        Ray makePrimaryRay(int u, int v, const Camera& camera);
+        Ray makePrimaryRay(float u, float v, const Camera& camera);
         Ray makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition);
 
         optional<RayIntersection> sphericalIntersection(const Ray& ray, const Sphere& sphere);

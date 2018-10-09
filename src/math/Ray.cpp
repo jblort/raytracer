@@ -6,21 +6,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "camera/Camera.h"
+#include "logging/Logger.h"
 #include "math/MathUtils.h"
 #include "math/Quadratic.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;
 
-Ray RayUtils::makePrimaryRay(int u, int v, const Camera& camera) {
+Ray RayUtils::makePrimaryRay(float u, float v, const Camera& camera) {
     Ray ray;
 
     ray.origin = glm::vec3(0.0, 0.0, 0.0);
-    ray.direction = glm::normalize(glm::vec3(u, v, camera.fovFactor()));
+    ray.direction = glm::normalize(glm::vec3(u * camera.fovFactor(), v * camera.fovFactor(), -1.0));
 
-    auto primaryRay = RayUtils::transform(ray, camera.viewTransform());
+    // View transform transforms from world to view, we want the opposite
+    auto cameraToWorld = glm::inverse(camera.viewTransform());
+    auto primaryRay = RayUtils::transform(ray, cameraToWorld);
 
-    return ray;
+    return primaryRay;
 }
 
 Ray RayUtils::makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition) {
@@ -32,7 +35,7 @@ Ray RayUtils::transform(const Ray& ray, const glm::mat4& transform) {
     Ray transformedRay;
 
     auto origin = transform *  glm::vec4(ray.origin, 1.0);
-    auto direction = transform * glm::vec4(ray.direction, 1.0);
+    auto direction = transform * glm::vec4(ray.direction, 0.0);
 
     transformedRay.origin = glm::vec3(origin);
     transformedRay.direction = glm::normalize(glm::vec3(direction));
@@ -41,14 +44,17 @@ Ray RayUtils::transform(const Ray& ray, const glm::mat4& transform) {
 }
 
 optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const Sphere& sphere) {
+
     auto intersection = optional<RayIntersection>();
-    glm::vec3 l = ray.direction;
+
+    glm::vec3 dir = ray.direction;
     glm::vec3 o = ray.origin;
     glm::vec3 center = sphere.center;
+    glm::vec3 L = o - center;
     double r = sphere.radius;
-    double a = glm::dot(l, l);
-    double b = 2 * glm::dot(l , (o - center));
-    double c = glm::dot((o - center), (o - center)) - r * r;
+    double a = glm::dot(dir, dir);
+    double b = 2 * glm::dot(dir , L);
+    double c = glm::dot(L, L) - r * r;
     auto solutions = Solver::solveQuadratic(a, b, c);
 
     if (solutions.count() == 0) {
@@ -79,7 +85,7 @@ optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const 
         dist = t0 < t1 ? t0 : t1;
     }
 
-    auto intersectionPoint = o + dist * l;
+    auto intersectionPoint = o + dist * dir;
     auto intersectionNormal = glm::normalize(intersectionPoint - center);
     intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
 
