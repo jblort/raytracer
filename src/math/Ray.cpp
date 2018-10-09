@@ -7,6 +7,7 @@
 
 #include "camera/Camera.h"
 #include "math/MathUtils.h"
+#include "math/Quadratic.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;
@@ -41,37 +42,46 @@ Ray RayUtils::transform(const Ray& ray, const glm::mat4& transform) {
 
 optional<RayIntersection> RayUtils::sphericalIntersection(const Ray& ray, const Sphere& sphere) {
     auto intersection = optional<RayIntersection>();
-
     glm::vec3 l = ray.direction;
     glm::vec3 o = ray.origin;
-    glm::vec3 c = sphere.center;
+    glm::vec3 center = sphere.center;
     double r = sphere.radius;
-    double loc = glm::dot(l, (o - c));
-    double delta = std::pow(loc, 2.0) - std::pow(norm(o - c), 2.0) + r*r;
+    double a = glm::dot(l, l);
+    double b = 2 * glm::dot(l , (o - center));
+    double c = glm::dot((o - center), (o - center)) - r * r;
+    auto solutions = Solver::solveQuadratic(a, b, c);
 
-    // The quadratic equation we solve to find the intersection has one solution
-    if (isEqual(delta, 0.0, 0.01)) {
-        float dist = - loc;
-        glm::vec3 intersectionPoint = o + l * dist;
-        glm::vec3 intersectionNormal = glm::normalize(intersectionPoint - c);
-
-        intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
+    if (solutions.count() == 0) {
+        return intersection;
     }
-    // The quadratic equation we solve to find the intersection has two solution
-    else if (delta > 0.0) {
-        float deltaSq = std::sqrt(delta);
 
-        float dist1 = - loc + deltaSq;
-        float dist2 = - loc - deltaSq;
-
-        float dist = dist1 > dist2 ? dist2 : dist1;
-
-        glm::vec3 intersectionPoint = o + dist * l;
-        glm::vec3 intersectionNormal = glm::normalize(intersectionPoint - c);
-        intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
+    if (solutions.count() == 1) {
+        auto value = solutions[0];
+        if (value < 0) {
+            return intersection;
+        }
     }
+
+    auto t0 = solutions[0];
+    auto t1 = solutions[1];
+
+    float dist = 0.0f;
+
+    // We discard the first solution if it's negative
+    if (t0 < 0) {
+        t0 = t1;
+        // We don't care if the other intersection is behind the ray origin.
+        if (t0 < 0) {
+            return intersection;
+        }
+        dist = t0;
+    } else {
+        dist = t0 < t1 ? t0 : t1;
+    }
+
+    auto intersectionPoint = o + dist * l;
+    auto intersectionNormal = glm::normalize(intersectionPoint - center);
+    intersection = optional<RayIntersection>(RayIntersection{intersectionPoint, intersectionNormal});
 
     return intersection;
 }
-
-
