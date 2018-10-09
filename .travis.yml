@@ -43,7 +43,7 @@ matrix:
 
 install:
 # Install conan
-- pip install conan
+- pip install --user conan
 # Add relevant conan repositories
 - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
 # Automatic detection of your arch, compiler, etc.
