@@ -17,19 +17,14 @@ Image SimpleTracer::trace(TracerOptions options) {
     auto clearColor = Color{0.1, 0.1, 0.1};
     auto w = options.traceWidth;
     auto h = options.traceHeight;
-    auto aspectRatio = w / h;
     auto resultImage = rt::emptyImage(options.traceWidth,
                                       options.traceHeight,
                                       options.traceFormat);
 
     for (unsigned int y = 0; y < resultImage.height(); ++y) {
         for (unsigned int x = 0; x < resultImage.width(); ++x) {
-            auto pixelNDCx = (x + 0.5) / w;
-            auto pixelNDCy = (y + 0.5) / h;
-            auto u = aspectRatio * (2 * pixelNDCx - 1);
-            auto v = 2 * pixelNDCy - 1;
 
-            auto primaryRay = Raytracing::makePrimaryRay(u, v, camera);
+            auto primaryRay = Raytracing::makePrimaryRay(x, y, w, h, camera);
             auto intersection = sphere.intersectionWith(primaryRay);
 
             if (intersection) {

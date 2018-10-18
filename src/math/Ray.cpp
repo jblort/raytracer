@@ -13,9 +13,13 @@
 
 using namespace rt;
 
-Ray Raytracing::makePrimaryRay(float u, float v, const Camera& camera) {
+Ray Raytracing::makePrimaryRay(float x, float y, float w, float h, const Camera& camera) {
     Ray ray;
-
+    auto aspectRatio = w / h;
+    auto pixelNDCx = (x + 0.5) / w;
+    auto pixelNDCy = (y + 0.5) / h;
+    auto u = aspectRatio * (2 * pixelNDCx - 1);
+    auto v = 2 * pixelNDCy - 1;
     ray.origin = glm::vec3(0.0, 0.0, 0.0);
     ray.direction = glm::normalize(glm::vec3(u * camera.fovFactor(), v * camera.fovFactor(), -1.0));
 

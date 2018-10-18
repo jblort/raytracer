@@ -20,7 +20,7 @@ Image raytracer::traceDefaultImage(TracerOptions options) {
     Sphere sphere{glm::vec3(0.0, 0.0, 0.0), 2.0};
     Color sphereColor{0.9, 0.0, 0.0};
 
-    //glm::vec3 lightPosition{0.0, 6.0, -4.0};
+    glm::vec3 lightPosition{0.0, 6.0, -4.0};
     Color lightColor{0.7, 0.7, 0.7};
 
     for (unsigned int y = 0; y < image.height(); ++y) {
@@ -30,8 +30,7 @@ Image raytracer::traceDefaultImage(TracerOptions options) {
             Color computedColor = Color{0.2, 0.2, 0.2, 0.2};
 
             // Create ray
-            auto coordinates = TracerUtils::deviceCoordinates(x, y, image.width(), image.height());
-            auto pRay = Raytracing::makePrimaryRay(coordinates.first, coordinates.second, camera);
+            auto pRay = Raytracing::makePrimaryRay(x, y, image.width(), image.height(), camera);
             // Find intersection with an object in the scene
             auto intersection = sphere.intersectionWith(pRay);
 
