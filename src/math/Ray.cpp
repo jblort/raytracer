@@ -8,7 +8,7 @@
 #include "camera/Camera.h"
 #include "logging/Logger.h"
 #include "math/MathUtils.h"
-#include "math/Quadratic.h"
+#include "math/QuadraticSolver.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;

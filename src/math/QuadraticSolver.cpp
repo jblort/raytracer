@@ -1,4 +1,4 @@
-#include "math/Quadratic.h"
+#include "math/QuadraticSolver.h"
 
 #include "math/FloatingComp.h"
 
