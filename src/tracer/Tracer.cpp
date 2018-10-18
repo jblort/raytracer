@@ -16,12 +16,12 @@ Image raytracer::traceDefaultImage(TracerOptions options) {
     std::cout << "Params: " << options.traceWidth << " " << options.traceHeight << "\n";
     std::cout << "Created image of size " << image.width() << "x" << image.height() << "\n";
 
-    Camera camera{glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 0.0, 0.0)};
-    Sphere sphere{glm::vec3(0.0, 0.0, 10.0), 2.0};
-    Color sphereColor{0.8, 0.0, 0.0};
+    Camera camera{glm::vec3(0.0, 0.0, 5.0), glm::vec3(0.0, 0.0, -1.0)};
+    Sphere sphere{glm::vec3(0.0, 0.0, 0.0), 2.0};
+    Color sphereColor{0.9, 0.0, 0.0};
 
-    glm::vec3 lightPosition{0.0, 6.0, -4.0};
-    Color lightColor{1.0, 1.0, 1.0};
+    //glm::vec3 lightPosition{0.0, 6.0, -4.0};
+    Color lightColor{0.7, 0.7, 0.7};
 
     for (unsigned int y = 0; y < image.height(); ++y) {
         for (unsigned int x = 0; x < image.width(); ++x) {
@@ -33,7 +33,7 @@ Image raytracer::traceDefaultImage(TracerOptions options) {
             auto coordinates = TracerUtils::deviceCoordinates(x, y, image.width(), image.height());
             auto pRay = RayUtils::makePrimaryRay(coordinates.first, coordinates.second, camera);
             // Find intersection with an object in the scene
-            auto intersection = RayUtils::sphericalIntersection(pRay, sphere);
+            auto intersection = sphere.intersectionWith(pRay);
 
             if (intersection) {
                 // Compute lighting

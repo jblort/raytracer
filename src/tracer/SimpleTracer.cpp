@@ -12,7 +12,6 @@ using namespace rt;
 Image SimpleTracer::trace(TracerOptions options) {
     auto sphere = Sphere{glm::vec3{0.0, 0.0, 0.0}, 2.0};
     auto camera = Camera{glm::vec3{0.0, 0.0, -5.0}, glm::vec3{0.0, 0.0, 0.0}};
-    auto sphereColor = Color{0.5, 0.0, 0.0};
     auto lightPosition = glm::vec3{0.0, -3.0, -3.0};
     auto lightColor = Color{0.8, 0.8, 0.8};
     auto clearColor = Color{0.1, 0.1, 0.1};
@@ -31,7 +30,7 @@ Image SimpleTracer::trace(TracerOptions options) {
             auto v = 2 * pixelNDCy - 1;
 
             auto primaryRay = RayUtils::makePrimaryRay(u, v, camera);
-            auto intersection = RayUtils::sphericalIntersection(primaryRay, sphere);
+            auto intersection = sphere.intersectionWith(primaryRay);
 
             if (intersection) {
                 auto L = glm::normalize(lightPosition - intersection->position);
@@ -42,7 +41,10 @@ Image SimpleTracer::trace(TracerOptions options) {
                 RV = RV > 0 ? RV : 0;
                 auto NL = glm::dot(L, N);
                 NL = NL > 0 ? NL : 0;
-                auto phongCol = sphereColor * NL + Color{1.0, 1.0, 1.0} * std::pow(RV, 20.0);
+                auto diffuseColor = intersection->localMaterial.diffuseColor;
+                auto specularColor = intersection->localMaterial.specularColor;
+                auto shininess = intersection->localMaterial.shininess;
+                auto phongCol = diffuseColor * NL + specularColor * std::pow(RV, shininess);
 
                 resultImage.fillColorAt(x, y, phongCol);
             } else {
