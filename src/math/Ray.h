@@ -19,7 +19,7 @@ namespace rt {
         SimpleMaterial localMaterial;
     };
 
-    namespace RayUtils {
+    namespace Raytracing {
         Ray makePrimaryRay(float u, float v, const Camera& camera);
         Ray makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition);
         Ray transform(const Ray& ray, const glm::mat4& transform);

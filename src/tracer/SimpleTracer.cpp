@@ -29,7 +29,7 @@ Image SimpleTracer::trace(TracerOptions options) {
             auto u = aspectRatio * (2 * pixelNDCx - 1);
             auto v = 2 * pixelNDCy - 1;
 
-            auto primaryRay = RayUtils::makePrimaryRay(u, v, camera);
+            auto primaryRay = Raytracing::makePrimaryRay(u, v, camera);
             auto intersection = sphere.intersectionWith(primaryRay);
 
             if (intersection) {

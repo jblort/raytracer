@@ -31,20 +31,20 @@ Image raytracer::traceDefaultImage(TracerOptions options) {
 
             // Create ray
             auto coordinates = TracerUtils::deviceCoordinates(x, y, image.width(), image.height());
-            auto pRay = RayUtils::makePrimaryRay(coordinates.first, coordinates.second, camera);
+            auto pRay = Raytracing::makePrimaryRay(coordinates.first, coordinates.second, camera);
             // Find intersection with an object in the scene
             auto intersection = sphere.intersectionWith(pRay);
 
             if (intersection) {
                 // Compute lighting
-                auto shadowRay = RayUtils::makeShadowRay(intersection->position, lightPosition);
+                auto shadowRay = Raytracing::makeShadowRay(intersection->position, lightPosition);
                 computedColor = 0.5 * lightColor + 0.5 * sphereColor;
             }
 
             // If intersection, compute lighthing contribution
             // if (intersection.distance != infinity) {
             //     for (auto& light : lights) {
-            //         auto shadowRay = RayUtils::makeShadowRay();
+            //         auto shadowRay = Raytracing::makeShadowRay();
             //         // Angles at point of intersection
             //         // Light contribution at intersection
             //         // compose light

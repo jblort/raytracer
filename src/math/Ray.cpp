@@ -13,7 +13,7 @@
 
 using namespace rt;
 
-Ray RayUtils::makePrimaryRay(float u, float v, const Camera& camera) {
+Ray Raytracing::makePrimaryRay(float u, float v, const Camera& camera) {
     Ray ray;
 
     ray.origin = glm::vec3(0.0, 0.0, 0.0);
@@ -21,17 +21,17 @@ Ray RayUtils::makePrimaryRay(float u, float v, const Camera& camera) {
 
     // View transform transforms from world to view, we want the opposite
     auto cameraToWorld = glm::inverse(camera.viewTransform());
-    auto primaryRay = RayUtils::transform(ray, cameraToWorld);
+    auto primaryRay = Raytracing::transform(ray, cameraToWorld);
 
     return primaryRay;
 }
 
-Ray RayUtils::makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition) {
+Ray Raytracing::makeShadowRay(const glm::vec3& intersectionPosition, const glm::vec3& lightPosition) {
     Ray ray{intersectionPosition, glm::normalize(lightPosition - intersectionPosition)};
     return ray;
 }
 
-Ray RayUtils::transform(const Ray& ray, const glm::mat4& transform) {
+Ray Raytracing::transform(const Ray& ray, const glm::mat4& transform) {
     Ray transformedRay;
 
     auto origin = transform *  glm::vec4(ray.origin, 1.0);
