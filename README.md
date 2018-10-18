@@ -1,8 +1,6 @@
 Raytracer
 ====================
 
-[![Build Status](https://travis-ci.org/jblort/raytracer.svg?branch=master)](https://travis-ci.org/jblort/raytracer)
-
 A simple raytracer project to toy with the concept.
 
 /!\ Still a Work in Progress /!\ 
