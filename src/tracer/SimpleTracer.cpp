@@ -12,7 +12,7 @@ using namespace rt;
 Image SimpleTracer::trace(TracerOptions options) {
     auto sphere = Sphere{glm::vec3{0.0, 0.0, 0.0}, 2.0};
     auto camera = Camera{glm::vec3{0.0, 0.0, -5.0}, glm::vec3{0.0, 0.0, 0.0}};
-    auto lightPosition = glm::vec3{0.0, -3.0, -3.0};
+    auto lightPosition = glm::vec3{0.0, 3.0, -3.0};
     auto lightColor = Color{0.8, 0.8, 0.8};
     auto clearColor = Color{0.1, 0.1, 0.1};
     auto w = options.traceWidth;
@@ -24,7 +24,8 @@ Image SimpleTracer::trace(TracerOptions options) {
     for (unsigned int y = 0; y < resultImage.height(); ++y) {
         for (unsigned int x = 0; x < resultImage.width(); ++x) {
 
-            auto primaryRay = Raytracing::makePrimaryRay(x, y, w, h, camera);
+            // Reverse y so we implicitly flip the resulting image
+            auto primaryRay = Raytracing::makePrimaryRay(x, h - y, w, h, camera);
             auto intersection = sphere.intersectionWith(primaryRay);
 
             if (intersection) {
