@@ -65,7 +65,6 @@ void Image::fillGrayscaleColorAt(int x, int y, Color color) {
 Image rt::emptyImage(int width, int height, PixelFormat format) {
     int channelCount = channelsForFormat(format);
     auto pixels = std::vector<unsigned char>(width * height * channelCount);
-    std::cout << "Creating empty image of size: " << width << " x " << height << " and channels: " << channelCount << "\n";
     Image emptyImage{pixels, width, height, format};
     return emptyImage;
 }
