@@ -24,8 +24,8 @@ double OmniLight::intensityAt(const RayIntersection& i) const {
     if (dist > _falloffDistance) { return 0.0; }
     if (isEqual(dist, 0.0)) { return 1.0; }
     auto relDist = dist / _falloffDistance;
-    // Apply simple inverse square law for light dimming
-    return 1.0 - 1.0 / std::sqrt(relDist);
+    auto computedIntensity = (relDist - 1) * (relDist * 1.2 - 1);
+    return computedIntensity > 0.0 ? computedIntensity : 0.0;
 }
 
 glm::vec3 OmniLight::directionRelativeTo(const RayIntersection& i) const {
