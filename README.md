@@ -3,8 +3,6 @@ Raytracer
 
 A simple raytracer project to toy with the concept.
 
-/!\ Still a Work in Progress /!\ 
-
 ## Build instructions
 
 This project depends on CMake and Conan, which need to be installed prior to building this project.
