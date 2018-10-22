@@ -1,12 +1,12 @@
 #pragma once
 
 #include "image/Image.h"
-#include "tracer/Tracer.h"
+#include "tracer/TracerOptions.h"
 
 namespace rt {
 
     namespace SimpleTracer {
-        Image trace(TracerOptions options = TracerOptions{});
+        Image trace(TracerOptions options);
     }
 
 }
