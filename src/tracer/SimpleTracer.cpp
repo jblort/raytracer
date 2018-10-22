@@ -3,8 +3,10 @@
 #include "camera/Camera.h"
 #include "image/Color.h"
 #include "image/Image.h"
+#include "light/OmniLight.h"
 #include "logging/Logger.h"
 #include "math/Ray.h"
+#include "shading/PhongShading.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;
@@ -14,6 +16,7 @@ Image SimpleTracer::trace(TracerOptions options) {
     auto camera = Camera{glm::vec3{0.0, 0.0, -5.0}, glm::vec3{0.0, 0.0, 0.0}};
     auto lightPosition = glm::vec3{0.0, 3.0, -3.0};
     auto lightColor = Color{0.8, 0.8, 0.8};
+    auto light = OmniLight{lightColor, lightPosition};
     auto clearColor = Color{0.1, 0.1, 0.1};
     auto w = options.traceWidth;
     auto h = options.traceHeight;
@@ -29,20 +32,8 @@ Image SimpleTracer::trace(TracerOptions options) {
             auto intersection = sphere.intersectionWith(primaryRay);
 
             if (intersection) {
-                auto L = glm::normalize(lightPosition - intersection->position);
-                auto N = intersection->normal;
-                auto R = glm::normalize(glm::reflect(L, N));
-                auto V = glm::normalize(intersection->position - camera.position());
-                auto RV = glm::dot(R,V);
-                RV = RV > 0 ? RV : 0;
-                auto NL = glm::dot(L, N);
-                NL = NL > 0 ? NL : 0;
-                auto diffuseColor = intersection->localMaterial.diffuseColor;
-                auto specularColor = intersection->localMaterial.specularColor;
-                auto shininess = intersection->localMaterial.shininess;
-                auto phongCol = diffuseColor * NL + specularColor * std::pow(RV, shininess);
-
-                resultImage.fillColorAt(x, y, phongCol);
+                auto color = PhongShading::simpleShading(*intersection, light, camera);
+                resultImage.fillColorAt(x, y, color);
             } else {
                 resultImage.fillColorAt(x, y, clearColor);
             }
