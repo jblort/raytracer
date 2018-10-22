@@ -32,6 +32,7 @@ int main(int argc, char** argv) {
     tracerOptions.antialiasingFactor = aaFactor;
 
     std::cout << "Tracing image of size: " << tracerOptions.traceWidth << "x" << tracerOptions.traceHeight << "\n";
+    std::cout << "Antialiasing factor is: " << tracerOptions.antialiasingFactor << "\n";
     auto image = SimpleTracer::trace(tracerOptions);
 
     ImageIO::saveToFile(image, "default.tga");
