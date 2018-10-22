@@ -16,7 +16,7 @@ Color PhongShading::simpleShading(const RayIntersection& intersection,
     auto diffuseColor = intersection.localMaterial.diffuseColor;
     auto specularColor = intersection.localMaterial.specularColor;
     auto shininess = intersection.localMaterial.shininess;
-    auto phongCol = diffuseColor * NL + specularColor * std::pow(RV, shininess);
+    auto phongCol = diffuseColor * light.color() * NL + specularColor * std::pow(RV, shininess);
 
     return phongCol;
 }
