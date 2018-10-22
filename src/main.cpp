@@ -10,21 +10,14 @@ int main(int argc, char** argv) {
     using namespace rt;
 
     argh::parser cliParser;
-    cliParser.add_params({"-w",
-                          "--width",
-                          "-h",
-                          "--height",
-                          "-a",
-                          "--aafactor",
-                          "-o",
-                          "--output-name"});
+    cliParser.add_params({"-w", "--width", "-h", "--height", "-a", "--aafactor"});
 
     cliParser.parse(argv);
 
     int width = 1024;
     int height = 768;
 
-    if (!cliParser({"-w", "--width"}) || !cliParser({"-h", "--height"})) {
+    if (!(cliParser({"-w", "--width"}) && cliParser({"-h", "--height"}))) {
         std::cout << "You must specify both width and height for these values to be used" << "\n";
     } else {
         cliParser({"-w", "--width"}, 1024) >> width;
@@ -41,9 +34,7 @@ int main(int argc, char** argv) {
     std::cout << "Tracing image of size: " << tracerOptions.traceWidth << "x" << tracerOptions.traceHeight << "\n";
     auto image = SimpleTracer::trace(tracerOptions);
 
-    std::string filename; cliParser({"-o", "--output-file"}, "default") >> filename;
-    filename.append(".tga");
-    ImageIO::saveToFile(image, filename);
+    ImageIO::saveToFile(image, "default.tga");
 
     return 0;
 }
