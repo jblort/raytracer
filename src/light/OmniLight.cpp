@@ -1,4 +1,8 @@
 #include "light/OmniLight.h"
+#include "math/FloatingComp.h"
+
+
+#include <cmath>
 
 using namespace rt;
 
@@ -16,7 +20,12 @@ Color OmniLight::color() const {
 }
 
 double OmniLight::intensityAt(const RayIntersection& i) const {
-    return 1.0f; // For now use full intensity at all ranges
+    auto dist = glm::length(_position - i.position);
+    if (dist > _falloffDistance) { return 0.0; }
+    if (isEqual(dist, 0.0)) { return 1.0; }
+    auto relDist = dist / _falloffDistance;
+    // Apply simple inverse square law for light dimming
+    return 1.0 - 1.0 / std::sqrt(relDist);
 }
 
 glm::vec3 OmniLight::directionRelativeTo(const RayIntersection& i) const {
