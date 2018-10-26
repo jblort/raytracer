@@ -49,7 +49,7 @@ install:
 - conan remote add public-jbl https://api.bintray.com/conan/jblort/public-jbl
 # Automatic detection of your arch, compiler, etc.
 - conan user
-- conan user -p CONAN_API_KEY -r public-jbl CONAN_USER_NAME
+- conan user -p $CONAN_API_KEY -r public-jbl $CONAN_USER_NAME
 # Install cmake
 #- if [ $TRAVIS_OS_NAME = osx ]; then brew install cmake; fi
 
