@@ -46,8 +46,10 @@ install:
 - pip install conan
 # Add relevant conan repositories
 - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
+- conan remote add public-jbl https://api.bintray.com/conan/jblort/public-jbl
 # Automatic detection of your arch, compiler, etc.
 - conan user
+- conan user -p CONAN_API_KEY -r public-jbl CONAN_USER_NAME
 # Install cmake
 #- if [ $TRAVIS_OS_NAME = osx ]; then brew install cmake; fi
 
