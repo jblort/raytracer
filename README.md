@@ -2,6 +2,7 @@ Raytracer
 ====================
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/10dbe5e10ca1460fa51f53d29d84c5e1)](https://www.codacy.com/app/jblort/raytracer?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jblort/raytracer&amp;utm_campaign=Badge_Grade)
+[![Build Status](https://travis-ci.org/jblort/raytracer.svg?branch=master)](https://travis-ci.org/jblort/raytracer)
 
 A simple raytracer project to toy with the concept.
 
