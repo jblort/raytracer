@@ -6,4 +6,5 @@ boost_format/1.66.0@bincrafters/stable
 
 [generators]
 cmake
+visual_studio
 ycm
