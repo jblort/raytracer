@@ -9,7 +9,7 @@ class Traceable {
 public:
     virtual ~Traceable(){};
 
-    virtual optional<RayIntersection> intersectionWith(const Ray& ray) = 0;
+    virtual optional<RayIntersection> intersectionWith(const Ray& ray) const = 0;
 };
 
 }

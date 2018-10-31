@@ -7,7 +7,6 @@
 
 namespace rt {
 
-// A default red material for spheres
 class Sphere: public Traceable {
 public:
     Sphere(const glm::vec3& center, double radius, const SimpleMaterial& material = DefaultMaterial);
@@ -15,7 +14,7 @@ public:
     virtual ~Sphere();
 public:
 
-    virtual optional<RayIntersection> intersectionWith(const Ray& ray) override;
+    virtual optional<RayIntersection> intersectionWith(const Ray& ray) const override;
 
 private:
     glm::vec3 _center;
