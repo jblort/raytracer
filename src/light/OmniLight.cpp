@@ -22,7 +22,7 @@ Color OmniLight::color() const {
 double OmniLight::intensityAt(const RayIntersection& i) const {
     auto dist = glm::length(_position - i.position);
     if (dist > _falloffDistance) { return 0.0; }
-    if (isEqual(dist, 0.0)) { return 1.0; }
+    if (isEqual(dist, 0.0f)) { return 1.0; }
     auto relDist = dist / _falloffDistance;
     auto computedIntensity = (relDist - 1) * (relDist * 1.2 - 1);
     return computedIntensity > 0.0 ? computedIntensity : 0.0;
