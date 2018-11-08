@@ -2,47 +2,59 @@ language: cpp
 
 linux: &linux
   os: linux
-  dist: bionic
+  dist: trusty
   sudo: required
   compiler: clang
-  addons: &clang6
+  addons: &clang5
     apt:
-      sources: ['llvm-toolchain-trusty-6.0', 'ubuntu-toolchain-r-test']
-      packages: ['clang-6.0', 'g++-7']
+      sources:
+        - ubuntu-toolchain-r-test
+        - llvm-toolchain-trusty-5.0
+      packages:
+        - gcc-7
+        - g++-7
+        - clang-5.0
+
+osx: &osx
+  os: osx
+  compiler: clang
 
 matrix:
-    include:
+  include:
 
-        # Linux C++14 GCC builds
-        #- os: linux
-        #  compiler: gcc
-        #  addons: &gcc6
-        #    apt:
-        #      sources: ['ubuntu-toolchain-r-test']
-        #      packages: ['g++-6']
-        #  env: COMPILER='g++-6' BUILD_TYPE='Release'
+    # Linux C++14 GCC builds
+    #- os: linux
+    #  compiler: gcc
+    #  addons: &gcc6
+    #    apt:
+    #      sources: ['ubuntu-toolchain-r-test']
+    #      packages: ['g++-6']
+    #  env: COMPILER='g++-6' BUILD_TYPE='Release'
 
-        #- os: linux
-        #  compiler: gcc
-        #  addons: *gcc6
-        #  env: COMPILER='g++-6' BUILD_TYPE='Debug'
+    #- os: linux
+    #  compiler: gcc
+    #  addons: *gcc6
+    #  env: COMPILER='g++-6' BUILD_TYPE='Debug'
 
-        #Linux C++14 Clang builds
-        - <<: *linux
-          env: COMPILER='clang++-6.0' BUILD_TYPE='Release'
+    #Linux C++14 Clang builds
+    - <<: *linux
+      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=clang-5.0 && CXX=clang++-5.0'
 
-        - <<: *linux
-          env: COMPILER='clang++-6.0' BUILD_TYPE='Debug'
+    - <<: *linux
+      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=clang-5.0 && CXX=clang++-5.0'
 
-        # OSX C++14 Clang Builds
+    # OSX C++14 Clang Builds
 
-        - os: osx
-          compiler: clang
-          env: COMPILER='clang++' BUILD_TYPE='Debug'
+    - os: osx
+      compiler: clang
+      env: BUILD_TYPE='Debug'
 
-        - os: osx
-          compiler: clang
-          env: COMPILER='clang++' BUILD_TYPE='Release'
+    - os: osx
+      compiler: clang
+      env: BUILD_TYPE='Release'
+
+before_install:
+- eval "${MATRIX_EVAL}"
 
 install:
 # Install conan
