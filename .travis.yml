@@ -2,15 +2,13 @@ language: cpp
 
 linux: &linux
   os: linux
-  dist: trusty
+  dist: bionic
   sudo: required
-  language: python
-  python: "3.6"
   compiler: clang
-  addons: &clang38
+  addons: &clang6
     apt:
-      sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
-      packages: ['clang-3.8']
+      sources: ['llvm-toolchain-trusty-6.0', 'ubuntu-toolchain-r-test']
+      packages: ['clang-6.0', 'g++-7']
 
 matrix:
     include:
@@ -31,10 +29,10 @@ matrix:
 
         #Linux C++14 Clang builds
         - <<: *linux
-          env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
+          env: COMPILER='clang++-6.0' BUILD_TYPE='Release'
 
         - <<: *linux
-          env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
+          env: COMPILER='clang++-6.0' BUILD_TYPE='Debug'
 
         # OSX C++14 Clang Builds
 
@@ -48,7 +46,7 @@ matrix:
 
 install:
 # Install conan
-- pip install conan --upgrade
+- sudo pip install conan --upgrade --ignore-installed
 # Add relevant conan repositories
 - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
 - conan remote add public-jbl https://api.bintray.com/conan/jblort/public-jbl
@@ -62,7 +60,7 @@ before_script:
 - mkdir build
 - cd build
 - conan install .. --build missing
-- cmake ..
+- cmake -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
 
 script:
 - cmake --build .
