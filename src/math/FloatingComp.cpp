@@ -9,17 +9,17 @@ const float FloatMax = std::numeric_limits<float>::max();
 const float DefaultEpsilon = 0.001; // Default distance: 1/10th of a millimeter
 
 bool rt::isEqual(float f1, float f2, float epsilon) {
-    float absf1 = std::fabsf(f1);
-    float absf2 = std::fabsf(f2);
-    float diff = std::fabsf(f1 - f2);
+    auto absf1 = std::fabs((double)f1);
+    auto absf2 = std::fabs((double)f2);
+    auto diff = std::fabs(f1 - f2);
 
     // Shortcut that handles infinity
     if (f1 == f2) { return true;}
 
     if (f1 == 0 || f2 == 0 || diff < FloatNormalMin ) {
-        return diff < epsilon * FloatNormalMin;
+        return diff < (double)epsilon * FloatNormalMin;
     } else {
-        return (diff / std::fmin((absf1 + absf2), FloatMax)) < epsilon ;
+        return (diff / std::fmin((absf1 + absf2), FloatMax)) < (double)epsilon ;
     }
 
     return false;
