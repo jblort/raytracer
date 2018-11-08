@@ -1,6 +1,7 @@
 #include "math/FloatingComp.h"
 
 #include <cmath>
+#include <cstdlib>
 #include <limits>
 
 const float FloatNormalMin = std::numeric_limits<float>::denorm_min();
