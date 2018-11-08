@@ -1,5 +1,17 @@
 language: cpp
 
+linux: &linux
+  os: linux
+  dist: trusty
+  sudo: required
+  language: python
+  python: "3.6"
+  compiler: clang
+  addons: &clang38
+    apt:
+      sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
+      packages: ['clang-3.8']
+
 matrix:
     include:
 
@@ -17,19 +29,12 @@ matrix:
         #  addons: *gcc6
         #  env: COMPILER='g++-6' BUILD_TYPE='Debug'
 
-        # Linux C++14 Clang builds
-        #- os: linux
-        #  compiler: clang
-        #  addons: &clang38
-        #    apt:
-        #      sources: ['llvm-toolchain-precise-3.8', 'ubuntu-toolchain-r-test']
-        #      packages: ['clang-3.8', 'python3', 'python3-pip']
-        #  env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
+        #Linux C++14 Clang builds
+        - <<: *linux
+          env: COMPILER='clang++-3.8' BUILD_TYPE='Release'
 
-        #- os: linux
-        #  compiler: clang
-        #  addons: *clang38
-        #  env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
+        - <<: *linux
+          env: COMPILER='clang++-3.8' BUILD_TYPE='Debug'
 
         # OSX C++14 Clang Builds
 
@@ -43,7 +48,7 @@ matrix:
 
 install:
 # Install conan
-- pip3 install conan 
+- pip install conan --upgrade
 # Add relevant conan repositories
 - conan remote add public-conan https://api.bintray.com/conan/bincrafters/public-conan
 - conan remote add public-jbl https://api.bintray.com/conan/jblort/public-jbl
