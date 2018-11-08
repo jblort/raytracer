@@ -4,16 +4,14 @@ linux: &linux
   os: linux
   dist: trusty
   sudo: required
-  compiler: clang
+  compiler: gcc
   addons: &clang5
     apt:
       sources:
         - ubuntu-toolchain-r-test
-        - llvm-toolchain-trusty-5.0
       packages:
         - gcc-7
         - g++-7
-        - clang-5.0
 
 osx: &osx
   os: osx
@@ -38,10 +36,10 @@ matrix:
 
     #Linux C++14 Clang builds
     - <<: *linux
-      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=clang-5.0 && CXX=clang++-5.0'
+      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=gcc-7 && CXX=g++-7'
 
     - <<: *linux
-      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=clang-5.0 && CXX=clang++-5.0'
+      env: BUILD_TYPE='Debug' MATRIX_EVAL='CC=gcc-7 && CXX=g++-7'
 
     # OSX C++14 Clang Builds
 
