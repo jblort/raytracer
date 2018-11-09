@@ -9,6 +9,7 @@
 #include "logging/Logger.h"
 #include "math/MathUtils.h"
 #include "math/QuadraticSolver.h"
+#include "traceables/Traceable.h"
 #include "traceables/shapes/Sphere.h"
 
 using namespace rt;
@@ -45,4 +46,25 @@ Ray Raytracing::transform(const Ray& ray, const glm::mat4& transform) {
     transformedRay.direction = glm::normalize(glm::vec3(direction));
 
     return transformedRay;
+}
+
+optional<RayIntersection> Raytracing::closestIntersection(const Ray& ray, const std::list<sptr<Traceable>>& traceables) {
+    auto closestIntersection = optional<RayIntersection>();
+    auto closestIntersectionDist = std::numeric_limits<double>::max();
+
+    for (auto& traceable : traceables) {
+        auto intersection = traceable->intersectionWith(ray);
+        if (intersection) {
+            auto dist =  rt::norm(intersection->position - ray.origin);
+
+            // Prevent surface acne by enforcing that intersection should be
+            // further than a specific small value
+            if (dist < closestIntersectionDist && dist > 0.001) {
+                closestIntersectionDist = dist;
+                closestIntersection = intersection;
+            }
+        }
+    }
+
+    return closestIntersection;
 }
