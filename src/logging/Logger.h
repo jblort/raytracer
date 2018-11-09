@@ -25,9 +25,10 @@ namespace rt {
         std::ostream& verbose();
 
     public:
-        void logVector(const glm::vec3& vec);
-        void logVector(const glm::vec4& vec);
-        void logMatrix(const glm::mat3& mat);
-        void logMatrix(const glm::mat4& mat);
+        void logVector(const glm::vec3& vec, const std::string& name = "");
+        void logVector(const glm::vec4& vec, const std::string& name = "");
+        void logMatrix(const glm::mat3& mat, const std::string& name = "");
+        void logMatrix(const glm::mat4& mat, const std::string& name = "");
+
     };
 }

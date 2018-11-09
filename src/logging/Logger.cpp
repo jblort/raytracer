@@ -55,14 +55,16 @@ std::ostream& Logger::verbose() {
     return formattedLogStream("[Verbose]");
 }
 
-void Logger::logVector(const glm::vec3& vec) {
-    info() << "[vec3]: " << "(" << vec.x << ", "
+void Logger::logVector(const glm::vec3& vec, const std::string& name) {
+    info() << (name.empty() ? "" : name) << (name.empty() ? "" : " -> ")
+           << "[vec3]: " << "(" << vec.x << ", "
                                 << vec.y << ", "
                                 << vec.z << ")";
 }
 
-void Logger::logVector(const glm::vec4& vec) {
-    info() << "[vec4]: "
+void Logger::logVector(const glm::vec4& vec, const std::string& name) {
+    info() << (name.empty() ? "" : name) << (name.empty() ? "" : " -> ")
+           << "[vec4]: "
            << "("
            << vec.x << ", "
            << vec.y << ", "
@@ -70,15 +72,15 @@ void Logger::logVector(const glm::vec4& vec) {
            << vec.w << ")";
 }
 
-void Logger::logMatrix(const glm::mat3& mat) {
-    info() << "[mat3]:\n";
+void Logger::logMatrix(const glm::mat3& mat, const std::string& name) {
+    info() << (name.empty() ? "" : name) << (name.empty() ? "" : " -> ") << "[mat3]:\n";
     info() << (bft("┌ %|+5.3f| %|+5.3f| %|+5.3f| ┐") % mat[0][0] % mat[0][1] % mat[0][2]).str() << "\n";
     info() << (bft("│ %|+5.3f| %|+5.3f| %|+5.3f| │") % mat[1][0] % mat[1][1] % mat[1][2]).str() << "\n";
     info() << (bft("└ %|+5.3f| %|+5.3f| %|+5.3f| ┘") % mat[2][0] % mat[2][1] % mat[2][2]).str();
 }
 
-void Logger::logMatrix(const glm::mat4& mat) {
-    info() << "[mat4]:\n";
+void Logger::logMatrix(const glm::mat4& mat, const std::string& name) {
+    info() << (name.empty() ? "" : name) << (name.empty() ? "" : " -> ") << "[mat4]:\n";
     info() << (bft("┌ %|+5.3f| %|+5.3f| %|+5.3f| %|+5.3f| ┐") % mat[0][0] % mat[0][1] % mat[0][2] % mat[0][3]).str() << "\n";
     info() << (bft("│ %|+5.3f| %|+5.3f| %|+5.3f| %|+5.3f| │") % mat[1][0] % mat[1][1] % mat[1][2] % mat[1][3]).str() << "\n";
     info() << (bft("│ %|+5.3f| %|+5.3f| %|+5.3f| %|+5.3f| │") % mat[2][0] % mat[2][1] % mat[2][2] % mat[2][3]).str() << "\n";
