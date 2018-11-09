@@ -22,7 +22,7 @@ Camera::Camera(const glm::vec3& position, const glm::vec3& lookAt):
 _viewTransform{makeViewTransform(position, lookAt)},
 _position{position},
 _lookAt{lookAt},
-_fov{100.0},
+_fov{80.0},
 _fovFactor{std::tan(_fov * M_PI * 0.5 / 180.0)}
 {
 }
