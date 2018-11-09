@@ -15,11 +15,12 @@
 using namespace rt;
 
 Image SimpleTracer::trace(TracerOptions options) {
-    auto sphere = Sphere{glm::vec3{0.0, 0.0, 0.0}, 2.0};
-    auto smallSphere = Sphere{glm::vec3{6.0, 0.0, 0.0}, 2.0};
-    auto otherSphere = Sphere{glm::vec3{-6.0, 0.0, 0.0}, 2.0};
+    auto sphere = std::make_shared<Sphere>(glm::vec3{0.0, 0.0, 0.0}, 2.0);
+    auto smallSphere = std::make_shared<Sphere>(glm::vec3{6.0, 0.0, 0.0}, 2.0);
+    auto otherSphere = std::make_shared<Sphere>(glm::vec3{-6.0, 0.0, 0.0}, 2.0);
+    auto shadowSphere = std::make_shared<Sphere>(glm::vec3{0.0, 2.5, 2.5}, 0.3);
     auto camera = Camera{glm::vec3{0.0, 0.0, 10.0}, glm::vec3{0.0, 0.0, 0.0}};
-    auto lightPosition = glm::vec3{0.0, 4.0, 4.0};
+    auto lightPosition = glm::vec3{0.0, 5.0, 5.0};
     auto lightColor = Color{0.8, 0.8, 0.8};
     auto light = OmniLight{lightColor, lightPosition, 30.0};
     auto clearColor = Color{0.1, 0.1, 0.1};
@@ -29,7 +30,7 @@ Image SimpleTracer::trace(TracerOptions options) {
                                       options.traceHeight,
                                       options.traceFormat);
 
-    auto traceables = {sphere, smallSphere, otherSphere};
+    auto traceables = std::list<sptr<Traceable>>{sphere, smallSphere, otherSphere, shadowSphere};
 
     for (unsigned int y = 0; y < resultImage.height(); ++y) {
         for (unsigned int x = 0; x < resultImage.width(); ++x) {
@@ -37,23 +38,20 @@ Image SimpleTracer::trace(TracerOptions options) {
             // Reverse y so we implicitly flip the resulting image
             auto primaryRay = Raytracing::makePrimaryRay(x, y, w, h, camera);
 
-            auto closestIntersection = optional<RayIntersection>();
-            auto closestIntersectionDist = std::numeric_limits<double>::max();
-
-            for (auto traceable : traceables) {
-                auto intersection = traceable.intersectionWith(primaryRay);
-                if (intersection) {
-                    auto dist =  rt::norm(intersection->position - primaryRay.origin);
-                    if (dist < closestIntersectionDist) {
-                        closestIntersectionDist = dist;
-                        closestIntersection = intersection;
-                    }
-                }
-            }
+            auto closestIntersection = Raytracing::closestIntersection(primaryRay, traceables);
 
             if (closestIntersection) {
-                auto color = PhongShading::simpleShading(*closestIntersection, light, camera);
-                resultImage.fillColorAt(x, y, color);
+                auto shadowRay = Raytracing::makeShadowRay(closestIntersection->position, lightPosition);
+
+                auto shadowIntersection = Raytracing::closestIntersection(shadowRay, traceables);
+
+                if (shadowIntersection) {
+                    resultImage.fillColorAt(x, y, Color{0.0, 0.0, 0.0, 1.0});
+                }
+                else {
+                    auto color = PhongShading::simpleShading(*closestIntersection, light, camera);
+                    resultImage.fillColorAt(x, y, color);
+                }
             } else {
                 resultImage.fillColorAt(x, y, clearColor);
             }
