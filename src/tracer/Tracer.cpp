@@ -5,7 +5,6 @@
 #include "camera/Camera.h"
 #include "math/Ray.h"
 #include "traceables/shapes/Sphere.h"
-#include "tracer/TracerUtils.h"
 
 using namespace rt;
 
