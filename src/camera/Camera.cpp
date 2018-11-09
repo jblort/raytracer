@@ -4,9 +4,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#ifdef _MSC_VER
-    #define _USE_MATH_DEFINES
-#endif
 #include <cmath>
 
 using namespace rt;
@@ -19,6 +16,8 @@ namespace {
         auto viewTransform = glm::lookAt(eye, center, up);
         return viewTransform;
     }
+
+    static const double Pi = 3.1415926535;
 }
 
 Camera::Camera(const glm::vec3& position, const glm::vec3& lookAt):
@@ -26,7 +25,7 @@ _viewTransform{makeViewTransform(position, lookAt)},
 _position{position},
 _lookAt{lookAt},
 _fov{80.0},
-_fovFactor{std::tan(_fov * M_PI * 0.5 / 180.0)}
+_fovFactor{std::tan(_fov * Pi * 0.5 / 180.0)}
 {
 }
 
