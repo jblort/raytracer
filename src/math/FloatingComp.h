@@ -10,8 +10,7 @@
 namespace rt {
 
 
-    template <typename FloatType,
-              typename = std::enable_if_t<std::is_floating_point<FloatType>::value>>
+    template <typename FloatType>
     bool isEqual(FloatType f1, FloatType f2, FloatType epsilon) {
         auto absf1 = std::fabs(f1);
         auto absf2 = std::fabs(f2);
@@ -32,8 +31,7 @@ namespace rt {
         return false;
     }
 
-    template <typename FloatType,
-              typename = std::enable_if_t<std::is_floating_point<FloatType>::value>>
+    template <typename FloatType>
     bool isEqual(FloatType f1, FloatType f2) {
         constexpr FloatType DefaultEpsilon = 0.001;
         return isEqual(f1, f2, DefaultEpsilon);
