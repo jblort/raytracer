@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     int width = 1024;
     int height = 768;
 
-    if (!(cliParser({"-w", "--width"}) && cliParser({"-h", "--height"}))) {
+    if (cliParser({"-w", "--width"}) != cliParser({"-h", "--height"})) {
         std::cout << "You must specify both width and height for these values to be used" << "\n";
     } else {
         cliParser({"-w", "--width"}, 1024) >> width;
