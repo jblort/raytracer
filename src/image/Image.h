@@ -38,5 +38,6 @@ private:
 };
 
 Image emptyImage(int width, int height, PixelFormat format);
+Image sampledImage(const Image& srcImage, int samplingFactor);
 
 }

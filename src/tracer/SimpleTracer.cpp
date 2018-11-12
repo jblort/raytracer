@@ -26,8 +26,11 @@ Image SimpleTracer::trace(TracerOptions options) {
     auto clearColor = Color{0.1, 0.1, 0.1};
     auto w = options.traceWidth;
     auto h = options.traceHeight;
-    auto resultImage = rt::emptyImage(options.traceWidth,
-                                      options.traceHeight,
+    auto traceWidth = options.traceWidth * options.antialiasingFactor;
+    auto traceHeight = options.traceHeight * options.antialiasingFactor;
+
+    auto resultImage = rt::emptyImage(traceWidth,
+                                      traceHeight,
                                       options.traceFormat);
 
     auto traceables = std::list<sptr<Traceable>>{sphere, smallSphere, otherSphere, shadowSphere};
@@ -57,6 +60,8 @@ Image SimpleTracer::trace(TracerOptions options) {
             }
         }
     }
-
+    if (options.antialiasingFactor > 1) {
+        resultImage = rt::sampledImage(resultImage, options.antialiasingFactor);
+    }
     return resultImage;
 }

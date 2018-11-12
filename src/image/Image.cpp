@@ -68,3 +68,38 @@ Image rt::emptyImage(int width, int height, PixelFormat format) {
     Image emptyImage{pixels, width, height, format};
     return emptyImage;
 }
+
+Image rt::sampledImage(const Image& srcImage, int samplingFactor) {
+    auto srcPixels = srcImage.pixels();
+    auto srcWidth = srcImage.width();
+    auto srcHeight = srcImage.height();
+    auto resultImage = emptyImage(srcImage.width() / samplingFactor,
+                                  srcImage.height() / samplingFactor,
+                                  srcImage.format());
+
+    for (int x = 0; x < resultImage.width(); ++x) {
+        for (int y = 0; y < resultImage.height(); ++y) {
+
+            float sampledRed = 0.0f, sampledGreen = 0.0f, sampledBlue = 0.0f;
+
+            for (int i = 0; i < samplingFactor; i++) {
+                for (int j = 0; j < samplingFactor; j++) {
+                    auto pixelIndex = ((y + i) * srcWidth + x + j) * 3;
+                    sampledRed += srcPixels[pixelIndex] / 255.f;
+                    sampledGreen += srcPixels[pixelIndex+1] / 255.f;
+                    sampledBlue += srcPixels[pixelIndex+2] / 255.f;
+                }
+            }
+
+            float count = float(samplingFactor * samplingFactor);
+            sampledRed /= count;
+            sampledGreen /= count;
+            sampledBlue /= count;
+
+            auto sampledColor = Color{sampledRed, sampledGreen, sampledBlue};
+            resultImage.fillColorAt(x, y, sampledColor);
+        }
+    }
+
+    return resultImage;
+}
